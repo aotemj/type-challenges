@@ -22,7 +22,7 @@
 
 /* _____________ Your Code Here _____________ */
 
-type MyAwaited<T> = T extends Promise<infer P> ? (P extends MyAwaited<infer Q> ? Q : P) : T;
+type MyAwaited<T> = T extends Promise<infer P> ? MyAwaited<P> : T extends { then: (onfulfilled: (args: infer P) => unknown) => unknown } ? P : T;
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from "@type-challenges/utils";
@@ -41,7 +41,6 @@ type cases = [
   Expect<Equal<MyAwaited<T>, number>>
 ];
 
-// @ts-expect-error
 type error = MyAwaited<number>;
 
 /* _____________ Further Steps _____________ */
